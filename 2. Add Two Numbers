@@ -11,8 +11,8 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-    ListNode* retVal = new ListNode();
-    auto calcVal = retVal;
+    ListNode retVal = ListNode();
+    auto calcVal = &retVal;
     int s(0.0);
     while (s || l1 || l2)
     {
@@ -31,6 +31,6 @@ public:
         calcVal->val = s%10;
         s = s / 10;       
     }
-    return retVal->next ? retVal->next : retVal;
+    return retVal.next ? retVal.next : &retVal;
     }
 };
