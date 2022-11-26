@@ -1,0 +1,24 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {       
+        std::set<ListNode *> usedPtr;       
+        do 
+        {
+            if (!head || !head->next)            
+               return false;
+            
+            usedPtr.insert(head);
+            head = head->next;
+        }
+        while(usedPtr.find(head) == usedPtr.end());
+        return true;        
+    }
+};
