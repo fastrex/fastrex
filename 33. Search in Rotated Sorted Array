@@ -15,14 +15,14 @@ public:
                 }
                 else
                 {
-                    lo = mid + 1;
+                    lo = mid;
                 }
             }
             else
             {
                 if (check(nums[mid], target, nums[hi]))
                 {
-                    lo = mid + 1;                   
+                    lo = mid;                   
                 }
                 else
                 {
@@ -40,7 +40,7 @@ public:
         }
         return -1;
     }
-
+      
     bool check(const int& left, const int& target, const int& right)
     {
         return left <= target && target <= right;
