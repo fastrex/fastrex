@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> retVal;
+        std::map<string, std::vector<string>> anagramMap;        
+        vector<string> val;
+        string ascStr;
+        for (auto&& str : strs)
+        {
+            ascStr = str;
+            std::sort(ascStr.begin(), ascStr.end());
+            auto it = anagramMap.find(ascStr);
+            if (it != anagramMap.end())
+            {
+                it->second.push_back(str);
+            }
+            else
+            {
+                anagramMap.emplace(ascStr, vector<string>{str});
+            }
+        }
+        for (auto it = anagramMap.begin(); it != anagramMap.end(); it++)
+        {
+           retVal.push_back(it->second);
+        }
+        return retVal;
+    }
+};
