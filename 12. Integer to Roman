@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxArea(vector<int>& height) 
+    {
+        int lo = 0, hi = (int)height.size() - 1;
+        int area, minHeight, pl = height[lo], pr = height[hi];
+        int bestArea = 0;     
+        while (lo < hi)
+        {  
+            minHeight = std::min(height[lo], height[hi]);
+            area = (hi - lo) * minHeight;
+            if (area > bestArea)
+            {
+                bestArea = area;
+            }    
+            while (minHeight >= height[lo] && lo < hi)
+            {
+                ++lo;
+            }   
+            while (minHeight >= height[hi] && lo < hi)
+            {
+                --hi;
+            }                  
+        }
+        return bestArea;
+    }
+};
