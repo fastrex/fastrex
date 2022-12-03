@@ -1,0 +1,37 @@
+class Solution {
+using SolutionType = std::pair<string, int>;
+using SolutionTypeConst = std::pair<const string, int>;
+
+    struct Comp
+    {
+        bool operator ()(const SolutionTypeConst* val1, const SolutionTypeConst* val2) const
+        {
+            return val1->second < val2->second || val1->second == val2->second && val1->first > val2->first;
+        }
+    };
+public:
+    vector<string> topKFrequent(vector<string>& words, int k)
+    {
+        vector<string> retVal;
+        retVal.reserve(k);
+        std::unordered_map<string, int> dictionary;
+        auto length = words.size();
+        for (auto&& item : words)
+        {
+            ++dictionary[std::move(item)];                      
+        }
+        std::priority_queue<SolutionTypeConst*, std::vector<SolutionTypeConst*>, Comp> que;
+        
+        for (auto& item : dictionary)
+        {
+            que.push(&item);
+        }
+        for (int i = 0; i < k; i++)
+        {
+
+            retVal.emplace_back(std::move(const_cast<std::string&>((*que.top()).first)));
+            que.pop();
+        }
+        return retVal;
+    }
+};
