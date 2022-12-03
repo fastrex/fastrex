@@ -1,0 +1,56 @@
+class Solution {
+
+    std::map<std::string, int> stringMap;
+    std::vector<std::string> retVal;
+
+public:
+    std::vector<std::string> removeInvalidParentheses(std::string s) 
+    {
+        normalize(s, errorCount(s));
+        return retVal;
+    }
+
+    void normalize(const std::string& s, int errCount)
+    {
+        auto isAdeed = stringMap.try_emplace(s, 1);
+        if (!isAdeed.second)        
+            return;
+        
+        if (!errCount && !errorCount(s))
+        {
+            retVal.emplace_back(s);            
+        }
+
+        for (int i = 0; i < s.size(); i++)
+        {
+            if (s[i] == '(' || s[i] == ')')
+            {
+                normalize(std::string(s.begin(), s.begin() + i) + std::string(s.begin() + i + 1, s.end()), errCount - 1);
+            }
+        }
+    }
+
+    int errorCount(const std::string& s)
+    {
+        std::stack<char> st;
+        for (int i = 0; i < s.size(); i++)
+        {
+            if (s[i] == '(')
+            {
+                st.push(s[i]);
+            }
+            else
+            {
+                if (!st.empty() && st.top() == '(' && s[i] == ')')
+                {
+                    st.pop();
+                }
+                else if (s[i] == '(' || s[i] == ')')
+                {
+                    st.push(s[i]);
+                }
+            }
+        }
+        return st.size();
+    }
+};
