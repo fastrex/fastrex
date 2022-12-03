@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) 
+    {
+        vector<vector<int>> retVal;
+        std::sort(intervals.begin(), intervals.end(), [](auto& val1, auto& val2)
+        { return val1.front() < val2.front();});
+
+        for (auto&& item : intervals)
+        {          
+            if (!retVal.empty() && retVal.back().back() >= item.front())
+            {
+                if  (retVal.back().back() < item.back())
+                    {
+                        retVal.back().back() = item.back();
+                    }
+            }
+            else
+            {
+                retVal.emplace_back(std::move(item));
+            }
+        }
+        return retVal;
+    }
+};
