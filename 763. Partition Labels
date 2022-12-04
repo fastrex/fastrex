@@ -1,0 +1,72 @@
+//without map
+
+class Solution {
+public:
+    vector<int> partitionLabels(string s)
+    {
+        vector<int> retVal;
+        int lo = 0;
+        int hi;
+        int length = s.size();
+        int backNum = 0;
+        int prevIndex = 0;
+
+        while (backNum < length && lo < length)
+        {
+            while (backNum <= lo)
+            {
+                hi = length - 1;
+
+                while (lo < hi && s[backNum] != s[hi])
+                {
+                    --hi;
+                }
+                lo = hi;
+                ++backNum;
+            }
+            retVal.push_back(backNum - prevIndex);
+            prevIndex = backNum;
+            ++lo;
+        }
+        return retVal;
+    }
+};
+
+//with map
+
+class Solution {
+public:
+    vector<int> partitionLabels(string s)
+    {
+        vector<int> retVal;
+        std::set<char> dict;
+        int lo = 0;
+        int hi;
+        int max = s.size() - 1;
+        int backNum = 0;
+        int prev = 0;
+
+        while (backNum <= max && lo <= max)
+        {            
+            while (backNum <= lo)
+            {
+                hi = max;
+                if (dict.find(s[backNum]) == dict.end())
+                {
+                    while (lo < hi && s[backNum] != s[hi])
+                    {
+                        --hi;
+                    }
+                    lo = hi;
+                }
+                dict.insert(s[backNum]);
+                ++backNum;
+            }
+            retVal.push_back(backNum - prev);
+            prev = backNum;
+            ++lo;
+            dict.clear();
+        }
+        return retVal;
+    }
+};
