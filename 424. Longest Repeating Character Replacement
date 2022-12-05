@@ -1,0 +1,27 @@
+class Solution 
+{
+public:
+    int characterReplacement(string s, int k)
+    {
+        int retVal = 0;
+        int i = 0, j = 0, maxSym = 0;
+        int length = s.size();
+        std::unordered_map<char, int> umap;
+
+        while (i < length)
+        {
+            umap[s[i]]++;
+            maxSym = std::max(maxSym, umap[s[i]]);
+
+            if (i - j + 1 - maxSym > k)
+            {
+                umap[s[j]]--;
+                j++;
+            }
+            retVal = std::max(retVal, i - j + 1);
+            i++;
+        }
+        return retVal;
+
+    }
+};
