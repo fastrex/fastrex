@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+std::stack<TreeNode*> s;
+std::unordered_map<TreeNode*, int> mp;
+
+public:
+    bool isBalanced(TreeNode* root) {
+        TreeNode* node = root;
+
+        while(true)
+        {
+            while(node)
+            {
+                s.push(node);
+                node = node->left;
+            }
+
+            if (s.empty())
+                return true;
+
+            node = s.top();
+
+            if (node->right && mp.emplace(node, 0).second)
+            {
+                node = node->right;
+            }
+            else
+            {
+                auto l = mp[node->left];
+                auto r = mp[node->right];
+                if  (std::abs(l - r) > 1)
+                {
+                    return false;
+                }
+                mp[node] = std::max(l,r) + 1;
+                s.pop();
+                node = nullptr;
+            }
+        }
+        return true;
+
+    }
+};
