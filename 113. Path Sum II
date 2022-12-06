@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    vector<vector<int>> retVal;
+    int target;
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {        
+        if  (!root) return retVal;
+        target = targetSum; 
+        vector<int> index;      
+        calc(root, 0);
+        for (auto& item : retVal)
+        {
+           std::reverse(item.begin(), item.end());
+        }
+        return retVal;      
+    }
+
+   vector<int> calc(TreeNode* root, int sum)
+    {
+        vector<int> rett = {};
+        sum += root->val;
+        if  (root->left)
+        {  
+           auto index = calc(root->left, sum);
+            if (!index.empty())
+            {                           
+                rett.insert(rett.end(), index.begin(), index.end());                
+            }                    
+        }
+        if  (root->right)
+        {   
+            auto index = calc(root->right, sum);
+            if (!index.empty())
+            {       
+                rett.insert(rett.end(), index.begin(), index.end());                  
+            }
+        }  
+        for (auto& item : rett)
+        {
+            retVal[item].push_back(root->val);
+        }
+
+        if   (!root->left && !root->right)
+        {
+            if (sum == target)
+            {
+                retVal.push_back({root->val}); 
+                return {(int)retVal.size() - 1};                
+            }
+        }
+        return rett;        
+    }
+};
