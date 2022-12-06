@@ -1,0 +1,65 @@
+class Solution {
+    static constexpr std::size_t cells = 10;
+    static constexpr std::array <std::size_t, cells> arr{ 100, 200, 400, 800, 1, 2, 4, 8, 16, 32 };
+    std::vector<std::size_t> loopValues;
+    std::set<std::size_t> dict;
+public:
+    std::vector<std::string> readBinaryWatch(int turnedOn){
+        if (turnedOn < 1) return {"0:00"};
+        if (turnedOn > 8) return {};
+        std::vector<std::string> retVal;
+        loopValues = std::vector<std::size_t>(turnedOn, 0);
+        
+        for (size_t i = 1; i < turnedOn; i++)
+            loopValues[i] = i;
+
+        bool needBreak = false;
+
+        while (loopValues.front() + turnedOn <= cells){
+            //for (size_t i = 0; i < loopValues.size(); i++)
+            //{
+            //    std::cout << arr[loopValues[i]] << " ";
+            //}
+            //std::cout << std::endl;
+
+            addIfNeed(retVal);
+
+            if (loopValues.back() < cells - 1){
+                ++loopValues.back();
+            }
+            else{
+                std::cout << std::endl;
+                needBreak = true;
+                for (int i = (int)loopValues.size() - 2; i >= 0; i--){
+                    auto& prev = loopValues[i];
+                    auto& cur = loopValues[i + 1];
+                    if (prev < cells - ((int)loopValues.size() - i)){
+                        needBreak = false;
+                        ++prev;
+                        cur = prev + 1;
+
+                        for (size_t j = i + 1; j < loopValues.size(); j++){
+                            loopValues[j] = loopValues[j - 1] + 1;
+                        }
+                        break;
+                    }
+                }
+                if (needBreak)
+                    break;
+            }
+        }
+        return retVal;
+    }
+
+    void addIfNeed(std::vector<std::string>& retVal){
+        std::size_t sum{};
+        for (auto& item : loopValues)
+            sum += arr[item];
+        
+        std::size_t hr = sum / 100;
+        std::size_t m = sum % 100;
+
+        if (hr < 12 && m < 60 && dict.emplace(sum).second)
+            retVal.emplace_back(std::to_string(hr) + ":" + (m < 10 ? "0" : "") + std::to_string(m));        
+    }
+};
