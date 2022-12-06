@@ -51,3 +51,25 @@ public:
 
     }
 };
+
+
+///////////////////////////////////////////////////
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if (!root) return true;
+        auto lh = calcHeight(root->left);
+        auto rh = calcHeight(root->right);
+        if  (std::abs(rh - lh) > 1)
+            return false;
+
+        return isBalanced(root->left) && isBalanced(root->right);
+    }
+
+    int calcHeight (TreeNode* node)
+    {
+        if  (!node)
+            return 0;
+        return std::max(calcHeight(node->left), calcHeight(node->right)) + 1;
+    }
+};
