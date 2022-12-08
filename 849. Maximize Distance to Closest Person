@@ -1,6 +1,39 @@
 class Solution {
 public:
     int maxDistToClosest(vector<int>& seats) {
+    int retVal = 0;
+        int beforeIndex = 0, lastIndex = seats.size() - 1;
+        int i = 0;
+        while (seats[i] == 0){
+            beforeIndex = i;
+            i++;
+        }
+        i = seats.size() - 1;
+        while (seats[i] == 0) {
+            lastIndex = i;
+            i--;
+        }
+        int centerIndex = beforeIndex;
+        for (i = centerIndex; i <= lastIndex; i++)
+        {
+            if (seats[i] == 0)
+            {
+                retVal = std::max(retVal, i - centerIndex);
+            }
+            else
+            {
+                centerIndex = i;
+            }
+        }
+        return std::max({ beforeIndex + 1, (int)seats.size() - lastIndex,  (int)ceil((double)retVal / 2) });
+   }
+ };
+
+
+/////////////////////////////////////////////////////
+class Solution {
+public:
+    int maxDistToClosest(vector<int>& seats) {
          int lastIndex = 0;
         bool isOne = seats.front();
         int retVal = isOne ? 0 : 1;
