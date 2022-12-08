@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int maxDistToClosest(vector<int>& seats) {
+         int lastIndex = 0;
+        bool isOne = seats.front();
+        int retVal = isOne ? 0 : 1;
+
+        for (int i = 1; i < seats.size(); i++)
+        {
+            if (seats[i] == 0)
+            {            
+                if (seats[i - 1] == 1)
+                {
+                    lastIndex = i;
+                }
+                if (!isOne || i == seats.size() - 1 && seats.back() == 0)
+                {
+                    retVal = std::max(retVal, i - lastIndex + 1);                    
+                }
+                else
+                {
+                    retVal = std::max(retVal, (i - lastIndex) / 2 + 1);
+                }                
+            }
+            else
+            {
+                isOne = true;                
+            }
+        }
+        return retVal;
+    }
+};
